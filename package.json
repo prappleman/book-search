@@ -11,8 +11,8 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "concurrently": "^5.1.0"
+    "concurrently": "^5.1.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.16.0"
   }
 }
