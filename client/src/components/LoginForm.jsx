@@ -54,7 +54,6 @@ const LoginForm = () => {
           <Form.Label htmlFor='email'>Email</Form.Label>
           <Form.Control
             type='text'
-            id='email' // Added id attribute matching htmlFor
             placeholder='Your email'
             name='email'
             onChange={handleInputChange}
@@ -63,12 +62,11 @@ const LoginForm = () => {
           />
           <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
         </Form.Group>
-  
+
         <Form.Group>
           <Form.Label htmlFor='password'>Password</Form.Label>
           <Form.Control
             type='password'
-            id='password' // Added id attribute matching htmlFor
             placeholder='Your password'
             name='password'
             onChange={handleInputChange}
@@ -85,7 +83,7 @@ const LoginForm = () => {
         </Button>
       </Form>
     </>
-  );  
+  );
 };
 
 export default LoginForm;
