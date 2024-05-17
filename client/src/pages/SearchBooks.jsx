@@ -51,14 +51,15 @@ const SearchBooks = () => {
 
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-    const token = Auth.getToken(); // Get the authentication token
 
-    if (!token) {
+    if (!Auth.loggedIn()) {
       console.error('You need to be logged in to save books.');
       return;
     }
 
     try {
+      const token = Auth.getToken();
+
       const { data } = await saveBook({ variables: { ...bookToSave, token } });
 
       if (!data) {
