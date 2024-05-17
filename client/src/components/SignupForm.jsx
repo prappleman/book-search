@@ -40,6 +40,7 @@ const SignupForm = () => {
 
       Auth.login(data.addUser.token);
     } catch (err) {
+      console.error(err);
       setShowAlert(true);
     }
 
@@ -63,7 +64,6 @@ const SignupForm = () => {
           <Form.Label htmlFor='username'>Username</Form.Label>
           <Form.Control
             type='text'
-            id='username' // Add the ID attribute for the username input
             placeholder='Your username'
             name='username'
             onChange={handleInputChange}
