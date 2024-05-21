@@ -16,12 +16,15 @@ const server = new ApolloServer({
 });
 
 // Use CORS middleware with appropriate options
-app.use(cors({
-  origin: '*', // Allow all origins, change as necessary
+const corsOptions = {
+  origin: ['https://studio.apollographql.com', '*'], // Allow specific origins
   methods: ['GET', 'POST', 'OPTIONS'], // Allow specific methods
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
   credentials: true, // Allow credentials
-}));
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+app.use(cors(corsOptions));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -36,10 +39,13 @@ if (process.env.NODE_ENV === 'production') {
 
 const startApolloServer = async () => {
   try {
+    console.log('Starting Apollo Server...');
     await server.start();
-    server.applyMiddleware({ app, cors: false }); // Disable ApolloServer's CORS
-
     console.log('Apollo Server started.');
+
+    console.log('Applying Apollo Server middleware...');
+    server.applyMiddleware({ app, cors: corsOptions });
+    console.log('Apollo Server middleware applied.');
 
     db.once('open', () => {
       app.listen(PORT, () => {
