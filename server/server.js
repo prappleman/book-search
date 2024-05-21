@@ -3,8 +3,9 @@ const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
 const cors = require('cors');
 const { authMiddleware } = require('./utils/auth');
-const { typeDefs, resolvers } = require('./schemas');
-const db = require('./config/connection');
+const typeDefs = require('./schema/typeDefs');
+const resolvers = require('./schema/resolvers');
+const connectDB = require('./config/connection');
 
 const app = express();
 const PORT = 3001;
@@ -27,17 +28,19 @@ app.use(express.json());
 // Static files
 app.use(express.static(path.join(__dirname, '../client/build')));
 
-// Apollo Server setup
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  context: authMiddleware,
-});
-
 const startServer = async () => {
   try {
     // Ensure the server is started
-    await server.start(); 
+    await connectDB(); 
+
+    // Apollo Server setup
+    const server = new ApolloServer({
+      typeDefs,
+      resolvers,
+      cache: 'bounded',
+      persistedQueries: false,
+      context: authMiddleware,
+    });
 
     // Apply Apollo Server middleware
     server.applyMiddleware({ app, cors: corsOptions });
