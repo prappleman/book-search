@@ -34,6 +34,9 @@ const server = new ApolloServer({
   context: authMiddleware,
 });
 
+// Ensure the server is started
+await server.start();
+
 // Apply Apollo Server middleware
 server.applyMiddleware({ app, cors: corsOptions });
 
