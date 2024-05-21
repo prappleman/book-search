@@ -1,7 +1,7 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
-const cors = require('cors'); // Import cors
+const cors = require('cors');
 const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
@@ -9,41 +9,46 @@ const db = require('./config/connection');
 const app = express();
 const PORT = 3001;
 
+// CORS options
+const corsOptions = {
+  origin: ['https://studio.apollographql.com', '*'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+};
+
+// Middleware
+app.use(cors(corsOptions));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Static files
+app.use(express.static(path.join(__dirname, '../client/build')));
+
+// Apollo Server setup
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: authMiddleware,
+  path: '/graphql',
 });
 
-// Use CORS middleware with appropriate options
-const corsOptions = {
-  origin: ['https://studio.apollographql.com', '*'], // Allow specific origins
-  methods: ['GET', 'POST', 'OPTIONS'], // Allow specific methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
-  credentials: true, // Allow credentials
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-};
-app.use(cors(corsOptions));
+// Apply Apollo Server middleware
+server.applyMiddleware({ app, cors: corsOptions });
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-
-app.use(express.static(path.join(__dirname, '../client/build')));
+// Serve React app
 app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
+// Start Apollo Server and API server
 const startApolloServer = async () => {
   try {
     console.log('Starting Apollo Server...');
     await server.start();
     console.log('Apollo Server started.');
-
-    console.log('Applying Apollo Server middleware...');
-    server.applyMiddleware({ app, cors: corsOptions });
-    console.log('Apollo Server middleware applied.');
 
     db.once('open', () => {
       app.listen(PORT, () => {
