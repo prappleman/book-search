@@ -34,21 +34,15 @@ const server = new ApolloServer({
   context: authMiddleware,
 });
 
-// Ensure the server is started
-await server.start();
-
-// Apply Apollo Server middleware
-server.applyMiddleware({ app, cors: corsOptions });
-
-// Serve React app
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
-});
-
-// Start API server
 const startServer = async () => {
   try {
-    await db.connect(); // Assuming db.connect() establishes the database connection
+    // Ensure the server is started
+    await server.start(); 
+
+    // Apply Apollo Server middleware
+    server.applyMiddleware({ app, cors: corsOptions });
+    // Assuming db.connect() establishes the database connection
+    await db.connect(); 
     console.log('Database connected.');
 
     app.listen(PORT, () => {
@@ -59,5 +53,11 @@ const startServer = async () => {
     console.error('Failed to start server:', error);
   }
 };
+
+// Serve React app for client-side routing
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+});
+
 
 startServer();
