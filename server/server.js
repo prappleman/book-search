@@ -32,7 +32,6 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: authMiddleware,
-  path: '/graphql',
 });
 
 // Apply Apollo Server middleware
@@ -43,26 +42,19 @@ app.get('*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
 });
 
-// Start Apollo Server and API server
-const startApolloServer = async () => {
+// Start API server
+const startServer = async () => {
   try {
-    console.log('Starting Apollo Server...');
-    await server.start();
-    console.log('Apollo Server started.');
+    await db.connect(); // Assuming db.connect() establishes the database connection
+    console.log('Database connected.');
 
-    db.once('open', () => {
-      app.listen(PORT, () => {
-        console.log(`API server running on port ${PORT}!`);
-        console.log(`GraphQL path: ${server.graphqlPath}`);
-      });
-    });
-
-    db.on('error', (err) => {
-      console.error('Database connection error:', err);
+    app.listen(PORT, () => {
+      console.log(`API server running on port ${PORT}!`);
+      console.log(`GraphQL path: ${server.graphqlPath}`);
     });
   } catch (error) {
-    console.error('Failed to start Apollo Server:', error);
+    console.error('Failed to start server:', error);
   }
 };
 
-startApolloServer();
+startServer();
