@@ -1,6 +1,7 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const path = require('path');
+const cors = require('cors'); // Import cors
 const { authMiddleware } = require('./utils/auth');
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
@@ -14,14 +15,20 @@ const server = new ApolloServer({
   context: authMiddleware,
 });
 
+// Use CORS middleware with appropriate options
+app.use(cors({
+  origin: '*', // Allow all origins, change as necessary
+  methods: ['GET', 'POST', 'OPTIONS'], // Allow specific methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+  credentials: true, // Allow credentials
+}));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Serve React static files in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../client/build')));
 
-  // Serve index.html for all other routes to support React Router
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
   });
@@ -30,7 +37,8 @@ if (process.env.NODE_ENV === 'production') {
 const startApolloServer = async () => {
   try {
     await server.start();
-    server.applyMiddleware({ app });
+    server.applyMiddleware({ app, cors: false }); // Disable ApolloServer's CORS
+
     console.log('Apollo Server started.');
 
     db.once('open', () => {
@@ -48,5 +56,4 @@ const startApolloServer = async () => {
   }
 };
 
-// Call the async function to start the server
 startApolloServer();
