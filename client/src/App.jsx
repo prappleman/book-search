@@ -6,7 +6,7 @@ import SavedBooks from "./pages/SavedBooks";
 import Navbar from "./components/Navbar";
 
 const client = new ApolloClient({
-  uri: 'https://book-search-83k4.onrender.com/graphql',
+  uri: process.env.REACT_APP_API_URL || 'https://book-search-83k4.onrender.com/graphql',
   cache: new InMemoryCache(),
 });
 
