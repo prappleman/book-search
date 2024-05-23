@@ -37,35 +37,44 @@ const resolvers = {
 
       return { token, user };
     },
+    
     // saveBook
     saveBook: async (parent, { bookId, authors, description, title, image, link }, context) => {
-        if (context.user) {
-            return await User.findOneAndUpdate(
-                { _id: context.user._id },
-                {
-                    $addToSet: {
-                        savedBooks: { bookId, authors, description, title, image, link },
-                    },
-                },
-                { new: true, runValidators: true }
-            );
-        } else {
-          throw new AuthenticationError("You need to be logged in!");
-        }
+      if (context.user) {
+        console.log('User:', context.user); // Log the user object
+        console.log('Book ID:', bookId); // Log the book ID
+        console.log('Book Data:', { bookId, authors, description, title, image, link }); // Log the book data
+
+        return await User.findOneAndUpdate(
+          { _id: context.user._id },
+          {
+            $addToSet: {
+              savedBooks: { bookId, authors, description, title, image, link },
+            },
+          },
+          { new: true, runValidators: true }
+        );
+      } else {
+        throw new AuthenticationError("You need to be logged in!");
+      }
     },
+
     // removeBook
     removeBook: async (parent, { bookId }, context ) => {
-        if (context.user) {
-            return await User.findOneAndUpdate(
-                { _id: context.user._id },
-                { $pull: { savedBooks: { bookId } } },
-                { new: true, runValidators: true }
-            );
-        } else {
-          throw new AuthenticationError("You need to be logged in!");
-        }
-        
+      if (context.user) {
+        console.log('User:', context.user); // Log the user object
+        console.log('Book ID to remove:', bookId); // Log the book ID to be removed
+
+        return await User.findOneAndUpdate(
+          { _id: context.user._id },
+          { $pull: { savedBooks: { bookId } } },
+          { new: true, runValidators: true }
+        );
+      } else {
+        throw new AuthenticationError("You need to be logged in!");
+      }  
     }
+
   }
 };
 
