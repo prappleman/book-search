@@ -61,7 +61,7 @@ const SearchBooks = () => {
       const token = Auth.getToken();
       console.log('Token:', token);
 
-      const { data } = await saveBook({ variables: { ...bookToSave, token } });
+      const { data } = await saveBook({ variables: { ...bookToSave } });
 
       if (!data) {
         throw new Error('Something went wrong while saving the book.');

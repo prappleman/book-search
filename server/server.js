@@ -27,7 +27,7 @@ const startServer = async () => {
       resolvers,
       cache: 'bounded',
       persistedQueries: false,
-      context: authMiddleware,
+      context: ({ req }) => authMiddleware({ req }),
     });
 
     // Ensure the server is started
