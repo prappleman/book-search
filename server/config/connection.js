@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // Define the connection URI
-const uri = 'mongodb+srv://parkerrappleye1:Parker4780@book-search:27017';
+const uri = 'mongodb+srv://parkerrappleye1:Parker4780@book-search.ppokqij.mongodb.net/book-search';
 
 // Function to connect to MongoDB
 const connectDB = async () => {
