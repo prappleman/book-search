@@ -51,7 +51,7 @@ const SearchBooks = () => {
 
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-    console.log('book:', book, 'bookid:', bookId );
+    console.log('book:', bookToSave );
 
     if (!Auth.loggedIn()) {
       console.error('You need to be logged in to save books.');
