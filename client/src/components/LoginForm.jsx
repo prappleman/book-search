@@ -15,6 +15,7 @@ const LoginForm = () => {
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
+    console.log(`Input changed - ${name}: ${value}`);
   };
 
   const handleFormSubmit = async (event) => {
@@ -34,7 +35,7 @@ const LoginForm = () => {
       });
       Auth.login(data.login.token);
     } catch (err) {
-      console.error(err);
+      console.error('Login Error:', err);
       setShowAlert(true);
     }
 
@@ -43,6 +44,7 @@ const LoginForm = () => {
       email: '',
       password: '',
     });
+    console.log('Form submitted with data:', userFormData);
   };
 
   return (
