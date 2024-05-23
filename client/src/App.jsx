@@ -11,30 +11,6 @@ const client = new ApolloClient({
 });
 
 function App() {
-  useEffect(() => {
-    // Simulating feature object definition
-    const feature = {
-      isFeatureEnabled: true
-    };
-
-    // Check if feature is defined before accessing its properties
-    if (typeof feature !== 'undefined' && feature.isFeatureEnabled) {
-      console.log('Feature is enabled');
-    } else {
-      console.log('Feature is not defined or isFeatureEnabled is not available');
-    }
-
-    // Define the initPalette function
-    function initPalette() {
-      // Your implementation here
-      console.log('Palette initialized');
-    }
-
-    // Call the initPalette function after it is defined
-    initPalette();
-  }, []);
-
-function App() {
   return (
     <ApolloProvider client={client}>
       <Router>
