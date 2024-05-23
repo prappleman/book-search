@@ -29,9 +29,9 @@ app.use(express.static(path.join(__dirname, '../client/build')));
 
 const startServer = async () => {
   try {
-    // Ensure the server is started
+    // Assuming db.connect() establishes the database connection
     await connectDB(); 
-
+    console.log('Database connected.');
     // Apollo Server setup
     const server = new ApolloServer({
       typeDefs,
@@ -41,11 +41,11 @@ const startServer = async () => {
       context: authMiddleware,
     });
 
+    // Ensure the server is started
+    await server.start()
+
     // Apply Apollo Server middleware
     server.applyMiddleware({ app, cors: corsOptions });
-    // Assuming db.connect() establishes the database connection
-    await db.connect(); 
-    console.log('Database connected.');
 
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
