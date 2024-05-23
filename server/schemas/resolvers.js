@@ -11,7 +11,7 @@ const resolvers = {
         return await User.findOne({ _id: context.user._id });
       }
       console.log("User not logged in"); // Log if user is not logged in
-      throw new AuthenticationError("You need to be logged in!");
+      throw new AuthenticationError("me query: You need to be logged in!");
     },
   },
   Mutation: {
@@ -59,7 +59,7 @@ const resolvers = {
         );
       } else {
         console.log("User not logged in when attempting to save book"); // Log if user is not logged in
-        throw new AuthenticationError("You need to be logged in!");
+        throw new AuthenticationError("savebook: You need to be logged in!");
       }
     },
     // Remove a book from the logged-in user's saved books
@@ -74,7 +74,7 @@ const resolvers = {
         );
       } else {
         console.log("User not logged in when attempting to remove book"); // Log if user is not logged in
-        throw new AuthenticationError("You need to be logged in!");
+        throw new AuthenticationError("removebook: You need to be logged in!");
       }
     }
   }
