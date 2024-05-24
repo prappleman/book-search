@@ -15,11 +15,7 @@ module.exports = {
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
     }
-
-    if (token) {
-      console.log('token found');
-    }
-
+    
     if (!token) {
       console.log('No token found');
       return { user: null };

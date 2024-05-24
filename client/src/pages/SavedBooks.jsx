@@ -7,16 +7,9 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  const { loading, data, error } = useQuery(QUERY_ME);
+  const { loading, data } = useQuery(QUERY_ME);
   let userData = data?.me || {};
   const [removeBook] = useMutation(REMOVE_BOOK);
-
-  // Log the data and error for debugging
-  console.log('User data:', userData);
-  console.log("error:", error, "data:", data, "loading", loading);
-  if (error) {
-    console.error('Error fetching user data:', error);
-  }
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -51,10 +44,6 @@ const SavedBooks = () => {
   // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
-  }
-
-  if (error) {
-    return <h2>Error loading saved books</h2>;
   }
 
   return (
