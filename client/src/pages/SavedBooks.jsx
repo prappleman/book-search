@@ -8,7 +8,7 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
   const { loading, data, error } = useQuery(QUERY_ME);
-  const userData = data?.me || { savedBooks: [] };
+  let userData = data?.me || {};
   const [removeBook] = useMutation(REMOVE_BOOK);
 
   // Log the data and error for debugging
