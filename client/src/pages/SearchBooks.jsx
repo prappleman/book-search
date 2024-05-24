@@ -70,6 +70,7 @@ const SearchBooks = () => {
           },
         },
       });
+      console.log('data await savebook:', data );
 
       if (!data) {
         throw new Error('Something went wrong while saving the book.');
