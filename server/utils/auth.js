@@ -6,14 +6,14 @@ const secret = 'mysecretkey';
 const expiration = '2h';
 
 module.exports = {
-  // Function for authenticated routes
   authMiddleware: function ({ req }) {
-    // Allows token to be sent via req.body, req.query, or headers
     let token = req.body.token || req.query.token || req.headers.authorization;
 
-    // ["Bearer", "<tokenvalue>"]
+    console.log('Token received:', token); // Log the received token
+
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
+      console.log('Token after split:', token); // Log the token after split
     }
     
     if (!token) {
@@ -21,7 +21,6 @@ module.exports = {
       return { user: null };
     }
 
-    // Verify token and get user data out of it
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
@@ -31,11 +30,8 @@ module.exports = {
       return { user: null };
     }
 
-    // Return the context with the user data
     return { user: req.user };
   },
-
-  // Function to sign a token
   signToken: function ({ username, email, _id }) {
     const payload = { username, email, _id };
     return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
