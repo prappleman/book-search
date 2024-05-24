@@ -37,9 +37,9 @@ const SavedBooks = () => {
         },
       });
 
-    if (!data) {
-      throw new Error('Something went wrong!');
-    }
+      if (!data) {
+        throw new Error('Something went wrong!');
+      }
       
       removeBookId(bookId);
     } catch (err) {
