@@ -9,18 +9,18 @@ import { removeBookId } from '../utils/localStorage';
 const SavedBooks = () => {
   const { loading, data, error } = useQuery(QUERY_ME);
   const userData = data?.me || { savedBooks: [] };
-  const [removeBook] = useMutation(REMOVE_BOOK);
 
   // Log the data and error for debugging
+  console.log('GraphQL data:', data);
   console.log('User data:', userData);
   if (error) {
     console.error('Error fetching user data:', error);
   }
 
-  // create function that accepts the book's mongo _id value as param and deletes the book from the database
+  const [removeBook] = useMutation(REMOVE_BOOK);
+
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
-    console.log('Token:', token);
 
     if (!token) {
       console.log('No token found, unable to delete book');
@@ -40,14 +40,13 @@ const SavedBooks = () => {
       if (!data) {
         throw new Error('Something went wrong!');
       }
-      
+
       removeBookId(bookId);
     } catch (err) {
       console.error('Error deleting book:', err);
     }
   };
 
-  // if data isn't here yet, say so
   if (loading) {
     return <h2>LOADING...</h2>;
   }
