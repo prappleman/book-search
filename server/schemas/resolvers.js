@@ -66,6 +66,7 @@ const resolvers = {
           },
           { new: true, runValidators: true }
         );
+        console.log({ _id: context.user._id })
       } else {
         console.log("User not logged in when attempting to save book"); // Log if user is not logged in
         throw new AuthenticationError("savebook: You need to be logged in!");
