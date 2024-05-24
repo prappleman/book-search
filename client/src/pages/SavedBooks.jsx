@@ -11,8 +11,11 @@ const SavedBooks = () => {
   const userData = data?.me || { savedBooks: [] };
   const [removeBook] = useMutation(REMOVE_BOOK);
 
-  // Log the data for debugging
+  // Log the data and error for debugging
   console.log('User data:', userData);
+  if (error) {
+    console.error('Error fetching user data:', error);
+  }
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -50,7 +53,6 @@ const SavedBooks = () => {
   }
 
   if (error) {
-    console.error('Error fetching user data:', error);
     return <h2>Error loading saved books</h2>;
   }
 
