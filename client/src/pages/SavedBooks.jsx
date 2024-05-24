@@ -13,8 +13,9 @@ const SavedBooks = () => {
 
   // Log the data and error for debugging
   console.log('User data:', userData);
+  console.log(error, data, loading);
   if (error) {
-    console.error('Error fetching user data:', error, data, loading);
+    console.error('Error fetching user data:', error);
   }
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
