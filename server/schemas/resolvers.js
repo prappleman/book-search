@@ -57,6 +57,7 @@ const resolvers = {
       if (context.user) {
         console.log("Saving book for user:", context.user._id); // Log user ID
         console.log("Book details:", { bookId, authors, description, title, image, link }); // Log book details
+        console.log({ _id: context.user._id })
         return await User.findOneAndUpdate(
           { _id: context.user._id },
           {
@@ -66,8 +67,8 @@ const resolvers = {
           },
           { new: true, runValidators: true }
         );
-        console.log({ _id: context.user._id })
       } else {
+        
         console.log("User not logged in when attempting to save book"); // Log if user is not logged in
         throw new AuthenticationError("savebook: You need to be logged in!");
       }
