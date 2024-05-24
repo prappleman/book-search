@@ -13,7 +13,7 @@ const SavedBooks = () => {
 
   // Log the data and error for debugging
   console.log('User data:', userData);
-  console.log(error, data, loading);
+  console.log("error:", error, "data:", data, "loading", loading);
   if (error) {
     console.error('Error fetching user data:', error);
   }
