@@ -62,7 +62,14 @@ const SearchBooks = () => {
       const token = Auth.getToken();
       console.log('Token:', token);
 
-      const { data } = await saveBook({ variables: { ...bookToSave } });
+      const { data } = await saveBook({
+        variables: { ...bookToSave },
+        context: {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
+      });
 
       if (!data) {
         throw new Error('Something went wrong while saving the book.');

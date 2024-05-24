@@ -17,19 +17,29 @@ const SavedBooks = () => {
   const handleDeleteBook = async (bookId) => {
     const token = Auth.loggedIn() ? Auth.getToken() : null;
     console.log('Token:', token);
+
     if (!token) {
+      console.log('No token found, unable to delete book');
       return false;
     }
 
     try {
-      const { data } = await removeBook({ variables: { bookId } });
-      if (!data) {
-        throw new Error('something went wrong!');
-      }
+      const { data } = await removeBook({
+        variables: { bookId },
+        context: {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        },
+      });
+
+    if (!data) {
+      throw new Error('Something went wrong!');
+    }
       
       removeBookId(bookId);
     } catch (err) {
-      console.error(err);
+      console.error('Error deleting book:', err);
     }
   };
 
