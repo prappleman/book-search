@@ -1,3 +1,4 @@
+const { Token } = require('graphql');
 const jwt = require('jsonwebtoken');
 
 // Set token secret and expiration date
@@ -13,6 +14,10 @@ module.exports = {
     // ["Bearer", "<tokenvalue>"]
     if (req.headers.authorization) {
       token = token.split(' ').pop().trim();
+    }
+
+    if (token) {
+      console.log('token found');
     }
 
     if (!token) {
