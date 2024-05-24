@@ -16,6 +16,7 @@ module.exports = {
     }
 
     if (!token) {
+      console.log('No token found');
       return { user: null };
     }
 
@@ -23,6 +24,7 @@ module.exports = {
     try {
       const { data } = jwt.verify(token, secret, { maxAge: expiration });
       req.user = data;
+      console.log('Token verified:', data);
     } catch {
       console.log('Invalid token');
       return { user: null };
