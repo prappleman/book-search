@@ -4,23 +4,12 @@ const { signToken } = require("../utils/auth");
 
 const resolvers = {
   Query: {
+    // me: User
     me: async (parent, args, context) => {
-      try {
-        if (context.user) {
-          console.log("Fetching user:", context.user._id); // Log user ID
-          const user = await User.findOne({ _id: context.user._id });
-          if (!user) {
-            throw new Error('User not found');
-          }
-          return user;
-        } else {
-          console.log("User not logged in"); // Log if user is not logged in
-          throw new AuthenticationError('You need to be logged in!');
-        }
-      } catch (error) {
-        console.error('Error fetching user data:', error);
-        throw new Error('An error occurred while fetching user data');
+      if (context.user) {
+        return await User.findOne({ _id: context.user._id });
       }
+      throw new AuthenticationError("You need to be logged in!");
     },
   },
   Mutation: {
