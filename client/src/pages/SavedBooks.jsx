@@ -7,6 +7,13 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
+  console.log('Token:', token);
+
+  if (!token) {
+    console.log('No token found, unable to delete book');
+    return false;
+  }
   const [loadData, { loading, data }] = useQuery(QUERY_ME, { 
     context: { headers: { authorization: `Bearer ${token}`}},
   });
