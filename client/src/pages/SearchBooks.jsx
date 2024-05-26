@@ -10,9 +10,9 @@ import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [searchInput, setSearchInput] = useState('');
-  const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
+  const [savedBookIds, setSavedBookIds] = useState([]);
 
-  const { loading, data } = useQuery(QUERY_ME);
+  const { data } = useQuery(QUERY_ME);
   const userData = data?.me || { savedBooks: [] };
 
   const [saveBook] = useMutation(SAVE_BOOK);
@@ -124,6 +124,7 @@ const SearchBooks = () => {
         </h2>
         <CardColumns>
           {searchedBooks.map((book) => {
+            const isSaved = savedBookIds.includes(book.bookId);
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? (
@@ -135,12 +136,10 @@ const SearchBooks = () => {
                   <Card.Text>{book.description}</Card.Text>
                   {Auth.loggedIn() && (
                     <Button
-                      disabled={savedBookIds?.some((savedBookId) => savedBookId === book.bookId)}
+                      disabled={isSaved}
                       className='btn-block btn-info'
                       onClick={() => handleSaveBook(book.bookId)}>
-                      {savedBookIds?.some((savedBookId) => savedBookId === book.bookId)
-                        ? 'This book has already been saved!'
-                        : 'Save this Book!'}
+                      {isSaved ? 'This book has already been saved!' : 'Save this Book!'}
                     </Button>
                   )}
                 </Card.Body>
