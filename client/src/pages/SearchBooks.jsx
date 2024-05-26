@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, Col, Form, Button, Card, CardColumns } from 'react-bootstrap';
-
-import Auth from '../utils/auth';
+import { useMutation, useQuery } from "@apollo/client";
+import { QUERY_ME } from "../utils/queries";
 import { SAVE_BOOK } from "../utils/mutations";
+import Auth from '../utils/auth';
 import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
-import { useMutation } from "@apollo/client";
 
 const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [searchInput, setSearchInput] = useState('');
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
+  const { loading, data } = useQuery(QUERY_ME);
+  const userData = data?.me || { savedBooks: [] };
+
   const [saveBook] = useMutation(SAVE_BOOK);
+
+  useEffect(() => {
+    if (userData.savedBooks) {
+      const userSavedBookIds = userData.savedBooks.map(book => book.bookId);
+      setSavedBookIds(userSavedBookIds);
+    }
+  }, [userData]);
 
   useEffect(() => {
     saveBookIds(savedBookIds); // Save IDs to localStorage on update
@@ -51,7 +61,6 @@ const SearchBooks = () => {
 
   const handleSaveBook = async (bookId) => {
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-    console.log('book:', bookToSave );
 
     if (!Auth.loggedIn()) {
       console.error('You need to be logged in to save books.');
@@ -60,7 +69,6 @@ const SearchBooks = () => {
 
     try {
       const token = Auth.getToken();
-      console.log('Token:', token);
 
       const { data } = await saveBook({
         variables: { ...bookToSave },
@@ -70,14 +78,12 @@ const SearchBooks = () => {
           },
         },
       });
-      console.log('data await savebook:', data );
 
       if (!data) {
         throw new Error('Something went wrong while saving the book.');
       }
 
       setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-      console.log('books:', ...savedBookIds, bookToSave.bookId);
     } catch (err) {
       console.error(err);
     }
