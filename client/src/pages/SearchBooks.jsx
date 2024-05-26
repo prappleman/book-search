@@ -12,7 +12,12 @@ const SearchBooks = () => {
   const [searchInput, setSearchInput] = useState('');
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds() || []);
 
-  const { loading, data } = useQuery(QUERY_ME);
+  const token = Auth.loggedIn() ? Auth.getToken() : null;
+  console.log('Token:', token);
+  
+  const { loading, data } = useQuery(QUERY_ME, { 
+    context: { headers: { authorization: `Bearer ${token}`}},
+  });
   const userData = data?.me || { savedBooks: [] };
 
   const [saveBook] = useMutation(SAVE_BOOK);
