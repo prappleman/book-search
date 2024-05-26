@@ -10,9 +10,9 @@ import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 const SearchBooks = () => {
   const [searchedBooks, setSearchedBooks] = useState([]);
   const [searchInput, setSearchInput] = useState('');
-  const [savedBookIds, setSavedBookIds] = useState([]);
+  const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds() || []);
 
-  const { data } = useQuery(QUERY_ME);
+  const { loading, data } = useQuery(QUERY_ME);
   const userData = data?.me || { savedBooks: [] };
 
   const [saveBook] = useMutation(SAVE_BOOK);
@@ -25,7 +25,7 @@ const SearchBooks = () => {
   }, [userData]);
 
   useEffect(() => {
-    saveBookIds(savedBookIds); // Save IDs to localStorage on update
+    saveBookIds(savedBookIds);
   }, [savedBookIds]);
 
   const handleFormSubmit = async (event) => {
