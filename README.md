@@ -19,9 +19,9 @@ The Book Search Engine is a web application that allows users to search for book
 - **Saved Books:** Save your favorite books to a personalized reading list. Manage your saved books easily for quick access to your reading choices.
 
 ## Screenshots
-![Signup/Login](client/public/assets/images/signup-login.png)
-![Search Books](client/public/assets/images/search-books.png)
-![Saved Books](client/public/assets/images/saved-books.png)
+![Signup/Login](client/public/assets/signup-login.png)
+![Search Books](client/public/assets/search-books.png)
+![Saved Books](client/public/assets/saved-books.png)
 
 ## Features
 1. **User Authentication:** Secure signup and login system for user accounts, ensuring personalized experiences and data management.
