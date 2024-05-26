@@ -25,7 +25,7 @@ const SearchBooks = () => {
   }, [userData]);
 
   useEffect(() => {
-    saveBookIds(savedBookIds);
+    saveBookIds(savedBookIds); // Save IDs to localStorage on update
   }, [savedBookIds]);
 
   const handleFormSubmit = async (event) => {
@@ -88,6 +88,10 @@ const SearchBooks = () => {
       console.error(err);
     }
   };
+
+  if (loading) {
+    return <h2>LOADING...</h2>;
+  }
 
   return (
     <>
