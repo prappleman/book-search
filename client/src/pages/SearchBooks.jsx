@@ -17,12 +17,13 @@ const SearchBooks = () => {
 
   const [saveBook] = useMutation(SAVE_BOOK);
 
+  // Update savedBookIds after userData is fetched
   useEffect(() => {
-    if (userData.savedBooks) {
+    if (!loading && userData.savedBooks) {
       const userSavedBookIds = userData.savedBooks.map(book => book.bookId);
       setSavedBookIds(userSavedBookIds);
     }
-  }, [userData]);
+  }, [loading, userData]);
 
   useEffect(() => {
     saveBookIds(savedBookIds); // Save IDs to localStorage on update
